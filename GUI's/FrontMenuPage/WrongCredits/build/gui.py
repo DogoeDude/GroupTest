@@ -11,7 +11,7 @@ from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\PC\Desktop\GuiProjects\build\assets\frame0")
+ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\PC\Desktop\GuiProjects\FrontPage\WrongCredits\build\assets\frame0")
 
 
 def relative_to_assets(path: str) -> Path:
@@ -46,7 +46,7 @@ image_1 = canvas.create_image(
 image_image_2 = PhotoImage(
     file=relative_to_assets("image_2.png"))
 image_2 = canvas.create_image(
-    165.99999642709065,
+    165.99998879769612,
     548.0,
     image=image_image_2
 )
@@ -236,6 +236,15 @@ button_2.place(
     y=504.0,
     width=85.25,
     height=17.0
+)
+
+canvas.create_text(
+    299.0,
+    406.0,
+    anchor="nw",
+    text="Wrong credentials! Please try again.",
+    fill="#FF0000",
+    font=("Inter", 12 * -1)
 )
 window.resizable(False, False)
 window.mainloop()
