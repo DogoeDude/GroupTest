@@ -7,13 +7,13 @@ from pathlib import Path
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, messagebox
 import mysql.connector
 
 # Your database connection details
-DB_HOST = "your_mysql_host"
-DB_USER = "your_mysql_user"
-DB_PASSWORD = "your_mysql_password"
+DB_HOST = "localhost"
+DB_USER = "root"
+DB_PASSWORD = "password"
 DB_DATABASE = "finproj_dbgui"
 
 # Database connection
@@ -23,7 +23,7 @@ conn = mysql.connector.connect(
     password=DB_PASSWORD,
     database=DB_DATABASE
 )
-cursor = conn.cursor() #IT STOPS HERE
+cursor = conn.cursor() #STOP
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\PC\Desktop\GuiProjects\FrontPage\LoginPage\build\assets\frame0")
@@ -32,6 +32,29 @@ ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\PC\Desktop\GuiProjects\FrontPage\Log
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
+def on_login_button_click():
+    try:
+        # Get the values entered in the email and PIN entries
+        email = entry_1.get()
+        pin = entry_2.get()
+
+        # Example query to check if the email and PIN exist in the database
+        query = "SELECT * FROM loginfo WHERE email = %s AND e_password = %s"
+        cursor.execute(query, (email, pin))
+
+        # Fetch the result
+        result = cursor.fetchall()
+
+        if result:
+            # If result is not empty, login is successful
+            messagebox.showinfo("Login", "Login Successful!")
+        else:
+            # If result is empty, login failed
+            messagebox.showerror("Login Error", "Invalid email or PIN.")
+
+    except mysql.connector.Error as e:
+        print(f"Error: {e}")
+        messagebox.showerror("Error", "An error occurred while processing your request.")
 
 window = Tk()
 
@@ -227,7 +250,7 @@ button_1 = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
+    command=on_login_button_click,  # Use the modified function
     relief="flat"
 )
 button_1.place(
